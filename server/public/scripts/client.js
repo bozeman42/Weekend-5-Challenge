@@ -6,6 +6,6 @@ app.config(function($routeProvider){
     controller: 'RentController as rc'
   }).when('/sale',{
     templateUrl: 'templates/sale.html',
-    controller: 'SaleController'
+    controller: 'SaleController as sc'
   });
 });
