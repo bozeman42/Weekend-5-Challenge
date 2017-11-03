@@ -1,1 +1,3 @@
-console.log('real estate service file loaded');
+app.service('RealEstateService', function($http){
+  console.log('RealEstateService created');
+});

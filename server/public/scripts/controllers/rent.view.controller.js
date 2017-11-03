@@ -1,1 +1,3 @@
-console.log('rent view controller loaded');
+app.controller('RentController', function(RealEstateService){
+  console.log('RentController created');
+});

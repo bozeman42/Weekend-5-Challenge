@@ -1,1 +1,3 @@
-console.log('Sale view controller loaded');
+app.controller('SaleController', function(RealEstateService){
+  console.log('SaleController created');
+});
