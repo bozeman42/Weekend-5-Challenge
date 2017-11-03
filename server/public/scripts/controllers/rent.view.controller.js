@@ -1,0 +1,1 @@
+console.log('rent view controller loaded');
