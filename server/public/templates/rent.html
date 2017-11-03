@@ -1,2 +1,6 @@
 <!-- RentController as rc -->
-RENT!!!!
+<div ng-repeat="rental in rc.result.rentals">
+  <p>{{rental.cost | currency}}</p>
+  <p>{{rental.sqft}} sqft</p>
+  <p>{{rental.city}}</p>
+</div>
