@@ -22,4 +22,16 @@ router.get('/rent',function(req,res){
   });
 });
 
+router.get('/sale',function(req,res){
+  Listing.find({}, function(err,foundListings){
+    if (err) {
+      console.log('Failed to GET listings');
+      res.sendStatus(500);
+    } else {
+      console.log('Got listings');
+      res.send(foundListings);
+    }
+  });
+});
+
 module.exports = router;

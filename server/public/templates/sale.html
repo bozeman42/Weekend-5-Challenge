@@ -1,2 +1,8 @@
 <!-- SaleController as sc -->
 SALE!!!!
+<div ng-repeat="listing in sc.result.listings">
+  A listing:
+  <p>{{listing.cost | currency}}</p>
+  <p>{{listing.sqft}} sqft</p>
+  <p>{{listing.city}}</p>
+</div>

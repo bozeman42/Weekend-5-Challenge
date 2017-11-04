@@ -10,8 +10,22 @@ app.service('RealEstateService', function($http){
   rs.getRentals = function(){
     $http.get('/realestate/rent').then(
       function success(response){
-        console.log(response.data);
+        console.log('rentals', response.data);
         rs.result.rentals = response.data;
+      }
+    )
+    .catch(
+      function error(error){
+        console.log(error);
+      }
+    );
+  };
+
+  rs.getListings = function(){
+    $http.get('/realestate/sale').then(
+      function success(response){
+        console.log('listings',response.data);
+        rs.result.listings = response.data;
       }
     )
     .catch(
