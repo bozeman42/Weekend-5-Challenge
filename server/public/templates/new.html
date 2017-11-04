@@ -1,0 +1,17 @@
+<!-- NewPropertyController as nc -->
+<div class="newPropertyForm">
+  <form>
+    <div class="form-group">
+      <label for="selectType">Is this property for rent or for sale?</label>
+      <select ng-change="nc.costOrRent(nc.newProperty.propertyType)" ng-model="nc.newProperty.propertyType" id="selectType">
+        <option value="">Select One</option>
+        <option value="sale">For Sale</option>
+        <option value="rent">For Rent</option>
+      </select>
+    </div>
+    <div ng-if="nc.newProperty.propertyType" class="form-group">
+      <label for="cost">{{nc.costType}}:</label>
+      <input ng.model="" type="number" id="cost">
+    </div>
+  </form>
+</div>

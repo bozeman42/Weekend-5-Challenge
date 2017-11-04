@@ -7,6 +7,13 @@ app.service('RealEstateService', function($http){
     listings: []
   };
 
+  rs.newProperty = {
+    propertyType: '',
+    cost: 0,
+    rent: 0,
+    city: ''
+  };
+
   rs.getRentals = function(){
     $http.get('/realestate/rent').then(
       function success(response){
