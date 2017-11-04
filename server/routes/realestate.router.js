@@ -4,12 +4,15 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var RentalSchema = new Schema({rent: Number, sqft: Number, City: String});
+var RentalSchema = new Schema({rent: Number, sqft: Number, city: String});
 var Rental = mongoose.model('Rental', RentalSchema, 'rentals');
 
-var ListingSchema = new Schema({cost: Number, sqft: Number, City: String});
+var ListingSchema = new Schema({cost: Number, sqft: Number, city: String});
 var Listing = mongoose.model('Listing', ListingSchema, 'listings');
 
+
+// GET /rent
+// return rental listings to the client
 router.get('/rent',function(req,res){
   Rental.find({}, function(err,foundRentals){
     if (err) {
@@ -22,6 +25,8 @@ router.get('/rent',function(req,res){
   });
 });
 
+// GET /sale
+// return sale listings to client
 router.get('/sale',function(req,res){
   Listing.find({}, function(err,foundListings){
     if (err) {
@@ -33,5 +38,46 @@ router.get('/sale',function(req,res){
     }
   });
 });
+
+// POST /
+// receives an object in the form
+// {
+//   propertyType: ('rent' or 'sale'),
+//   cost: Number,
+//   sqft: Number,
+//   city: String
+// }
+// based upon propertyType, construct an object to send to mongo
+// rent:
+// {
+//   rent,
+//   sqft,
+//   city
+// }
+
+// sale:
+// {
+//   cost,
+//   sqft,
+//   city
+// }
+router.post('/',function(req,res){
+  var property = req.body;
+  console.log(property);
+  if (property.propertyType === 'rent'){
+    var propertyToAdd = new Rental({rent: property.cost, sqft: property.sqft, city: property.city});
+  } else {
+    var propertyToAdd = new Listing({cost: property.cost, sqft: property.sqft, city: property.city});
+  }
+  propertyToAdd.save(function(err, data){
+    if(err) {
+        console.log(err);
+        res.sendStatus(500);
+    } else {
+        res.sendStatus(201);
+    }
+  });
+});
+
 
 module.exports = router;

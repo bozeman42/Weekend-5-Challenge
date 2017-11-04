@@ -7,5 +7,8 @@ app.config(function($routeProvider){
   }).when('/sale',{
     templateUrl: 'templates/sale.html',
     controller: 'SaleController as sc'
+  }).when('/new', {
+    templateUrl: 'templates/new.html',
+    controller: 'NewPropertyController as nc'
   });
 });
