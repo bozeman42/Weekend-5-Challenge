@@ -9,8 +9,8 @@ app.service('RealEstateService', function($http){
 
   rs.newProperty = {
     propertyType: '',
-    cost: 0,
-    rent: 0,
+    cost: '',
+    sqft: '',
     city: ''
   };
 
@@ -42,4 +42,16 @@ app.service('RealEstateService', function($http){
     );
   };
 
+  rs.addNewProperty = function(newProperty){
+
+    $http.post('/realestate',newProperty)
+    .then(function success(response){
+      console.log('Successfully POSTed new property');
+    })
+    .catch(function failure(err){
+      console.log('POST failed',err);
+    });
+  };
+
+  
 });

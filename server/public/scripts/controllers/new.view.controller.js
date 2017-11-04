@@ -12,6 +12,11 @@ app.controller('NewPropertyController', function(RealEstateService){
       vm.costType = 'Cost';
     }
   };
+
+  vm.addNewProperty = function(newProperty){
+    rs.addNewProperty(newProperty);
+  };
+  
   vm.costOrRent(vm.newProperty.propertyType);
 });
 

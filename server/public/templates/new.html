@@ -1,17 +1,27 @@
 <!-- NewPropertyController as nc -->
-<div class="newPropertyForm">
-  <form>
+<div class="newPropertyPage">
+  <form id="newPropertyForm" ng-submit="nc.addNewProperty(nc.newProperty)">
     <div class="form-group">
       <label for="selectType">Is this property for rent or for sale?</label>
-      <select ng-change="nc.costOrRent(nc.newProperty.propertyType)" ng-model="nc.newProperty.propertyType" id="selectType">
+      <select class="form-control-inline" name="selectType" ng-change="nc.costOrRent(nc.newProperty.propertyType)" ng-model="nc.newProperty.propertyType" id="selectType" required>
         <option value="">Select One</option>
         <option value="sale">For Sale</option>
         <option value="rent">For Rent</option>
       </select>
     </div>
-    <div ng-if="nc.newProperty.propertyType" class="form-group">
-      <label for="cost">{{nc.costType}}:</label>
-      <input ng.model="" type="number" id="cost">
+    <div class="form-group">
+      <label for="squareFootageIn">Square Footage:</label>
+      <input id="squareFootageIn" name="squareFootageIn" class="form-control-inline" type="number" ng-model="nc.newProperty.sqft" required>
+      <label for="squareFootageIn">ft<sup>2</sup></label>
+    </div>
+    <div class="form-group">
+      <label for="cityIn">City:</label>
+      <input id="cityIn" name="cityIn" class="form-control-inline" type="text" ng-model="nc.newProperty.city" required>
+    </div>
+    <div ng-show="nc.newProperty.propertyType" class="form-group">
+      <label for="costIn">{{nc.costType}}:</label>
+      $<input ng-model="nc.newProperty.cost" name="costIn" class="form-control-inline" type="number" step="0.01" id="costIn" ng-pattern="/^\d+(\.\d{1,2})?$/" required>
+      <button id="submitPropertyBtn" class="btn btn-primary" type="submit">Submit</button>
     </div>
   </form>
 </div>
