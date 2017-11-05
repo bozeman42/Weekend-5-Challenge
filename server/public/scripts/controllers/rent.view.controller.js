@@ -8,6 +8,10 @@ app.controller('RentController', function(RealEstateService){
     rs.getRentals();
   };
 
+  rc.deleteRental = function(id){
+    console.log(id);
+    rs.deleteProperty(id,'rental');
+  };
   rc.getRentals();
 
 });

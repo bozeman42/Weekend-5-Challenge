@@ -4,8 +4,10 @@ app.controller('NewPropertyController', function(RealEstateService){
   var rs = RealEstateService;
   vm.costType = '';
   vm.newProperty = rs.newProperty;
+
+  // vm.costOrRent(propertyType) determines whether the form requests a rent or a cost
+  // once a value is established the field will display and the submit button will appear
   vm.costOrRent = function(propertyType){
-    var costType = '';
     if (propertyType === 'rent'){
       vm.costType = 'Rent';
     } else {

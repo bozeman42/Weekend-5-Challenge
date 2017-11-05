@@ -1,10 +1,12 @@
 <!-- SaleController as sc -->
-SALE!!!!
+<h1>Properties for Sale</h1>
 <div class="propertiesView">
-  <div ng-repeat="listing in sc.result.listings">
-    A listing:
-    <p>{{listing.cost | currency}}</p>
-    <p>{{listing.sqft}} sqft</p>
-    <p>{{listing.city}}</p>
+    <div ng-repeat="listing in sc.result.listings" class="col-md-4 col-sm-6">
+      <div class="propertyDiv">
+        <p><strong>Cost:</strong> {{listing.cost | currency}}</p>
+        <p><strong>Floor Area:</strong> {{listing.sqft}} ft<sup>2</sup></p>
+        <p><strong>City:</strong> {{listing.city}}</p>
+        <button ng-click="sc.deleteListing(listing._id)"class="btn btn-danger delete-button">Delete Property</button>
+      </div>
+    </div>
   </div>
-</div>

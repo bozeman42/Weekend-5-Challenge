@@ -42,6 +42,11 @@ app.service('RealEstateService', function($http){
     );
   };
 
+  rs.refreshProperties = function(){
+    rs.getListings();
+    rs.getRentals();
+  }
+
   rs.addNewProperty = function(newProperty){
 
     $http.post('/realestate',newProperty)
@@ -53,5 +58,15 @@ app.service('RealEstateService', function($http){
     });
   };
 
+  rs.deleteProperty = function(id,propertyType){
+    var config = { params: { id: id, propertyType: propertyType} };
+    $http.delete('/realestate', config)
+    .then(function success(response){
+      console.log('Property deleted');
+      rs.refreshProperties();
+    }).catch(function error(err){
+      console.log('Failed to delete property');
+    });
+  };
   
 });

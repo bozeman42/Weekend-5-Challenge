@@ -62,8 +62,8 @@ router.get('/sale',function(req,res){
 //   city
 // }
 router.post('/',function(req,res){
+  console.log('req.body',req.body);
   var property = req.body;
-  console.log(property);
   if (property.propertyType === 'rent'){
     var propertyToAdd = new Rental({rent: property.cost, sqft: property.sqft, city: property.city});
   } else {
@@ -79,5 +79,33 @@ router.post('/',function(req,res){
   });
 });
 
+router.delete('/', function(req,res){
+  console.log('In the delete route');
+  console.log(req.query);
+  var property = req.query;
+  if (property.propertyType === 'rental'){
+    Rental.findByIdAndRemove({ "_id": property.id }, function (err, data) {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        console.log('deleted',data);
+        res.sendStatus(200);
+      }
+    });
+  } else if (property.propertyType === 'listing'){
+    Listing.findByIdAndRemove({ "_id": property.id }, function (err, data) {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        console.log('deleted',data);
+        res.sendStatus(200);
+      }
+    });
+  } else {
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;

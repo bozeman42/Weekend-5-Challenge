@@ -1,8 +1,12 @@
 <!-- RentController as rc -->
+<h1>Properties for Rent</h1>
 <div class="propertiesView">
-  <div ng-repeat="rental in rc.result.rentals">
-    <p>{{rental.rent | currency}}</p>
-    <p>{{rental.sqft}} sqft</p>
-    <p>{{rental.city}}</p>
+  <div ng-repeat="rental in rc.result.rentals" class="col-md-4 col-sm-6">
+    <div class="propertyDiv">
+      <p><strong>Rent:</strong> {{rental.rent | currency}}</p>
+      <p><strong>Floor Area:</strong> {{rental.sqft}} ft<sup>2</sup></p>
+      <p><strong>City:</strong> {{rental.city}}</p>
+      <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
+    </div>
   </div>
 </div>

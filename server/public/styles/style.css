@@ -1,9 +1,14 @@
-.propertiesView div {
-  margin: 50px;
-}
-
 #squareFootageIn {
   text-align: right;
+}
+
+.propertyDiv {
+  background-color: #999;
+  margin: 10px;
+  padding: 25px;
+  border: solid black 2px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 #newPropertyForm {
@@ -16,5 +21,9 @@
 }
 
 #submitPropertyBtn{
+  float: right;
+}
+
+.delete-button {
   float: right;
 }
