@@ -61,6 +61,7 @@ router.get('/sale',function(req,res){
 //   sqft,
 //   city
 // }
+
 router.post('/',function(req,res){
   console.log('req.body',req.body);
   var property = req.body;
@@ -107,5 +108,39 @@ router.delete('/', function(req,res){
     res.sendStatus(500);
   }
 });
+
+router.put('/',function(req,res){
+  var propertyType = req.query.propertyType;
+  var property = req.body;
+  console.log(req.body);
+  console.log('property type',propertyType);
+  if (propertyType === 'rental'){
+    Rental.findByIdAndUpdate(property._id,property, function(err, data){
+      if (err){
+          console.log('Error',err);
+          res.sendStatus(500);
+      } else {
+          res.sendStatus(200);
+          console.log('Rental updated',data);
+      }
+    });
+  } else if (propertyType === 'listing'){
+    Listing.findByIdAndUpdate(property._id,property, function(err, data){
+      if (err){
+          console.log('Error',err);
+          res.sendStatus(500);
+      } else {
+          res.sendStatus(200);
+          console.log('Listing updated',data);
+      }
+    });
+  } else {
+    console.log('Improper property type.');
+    res.sendStatus(500);
+  }
+});
+
+
+
 
 module.exports = router;

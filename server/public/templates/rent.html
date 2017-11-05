@@ -6,6 +6,7 @@
       <p><strong>Rent:</strong> {{rental.rent | currency}}</p>
       <p><strong>Floor Area:</strong> {{rental.sqft}} ft<sup>2</sup></p>
       <p><strong>City:</strong> {{rental.city}}</p>
+      <button ng-click="rc.editProperty(rental)" class="btn btn-primary">Edit</button>
       <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
     </div>
   </div>

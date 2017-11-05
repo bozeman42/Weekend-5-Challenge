@@ -1,0 +1,19 @@
+<h3>Edit {{ec.result.propertyToEdit.propertyType}}</h3>
+<form id="newPropertyForm" ng-submit="ec.editProperty(ec.result.propertyToEdit)">
+  <div class="form-group">
+    <label for="squareFootageIn">Square Footage:</label>
+    <input id="squareFootageIn" name="squareFootageIn" class="form-control-inline" type="number" ng-model="ec.result.propertyToEdit.sqft" required>
+    <label for="squareFootageIn">ft<sup>2</sup></label>
+  </div>
+  <div class="form-group">
+    <label for="cityIn">City:</label>
+    <input id="cityIn" name="cityIn" class="form-control-inline" type="text" ng-model="ec.result.propertyToEdit.city" required>
+  </div>
+  <div class="form-group">
+    <label for="costIn">{{ec.result.propertyToEdit.costType}}: $</label>
+    <input ng-if="ec.result.propertyToEdit.costType === 'Cost'" ng-model="ec.result.propertyToEdit.cost" name="costIn" class="form-control-inline" type="number" step="0.01" id="costIn" ng-pattern="/^\d+(\.\d{1,2})?$/" required>
+    <input ng-if="ec.result.propertyToEdit.costType === 'Rent'" ng-model="ec.result.propertyToEdit.rent" name="costIn" class="form-control-inline" type="number" step="0.01" id="costIn" ng-pattern="/^\d+(\.\d{1,2})?$/" required>
+  </div>
+  <button id="submitPropertyBtn" class="btn btn-primary form-button" type="submit">Submit</button>
+  <button ng-click="ec.dismiss()" type="button" id="cancelEditBtn" class="btn btn-warning form-button">Cancel</button>
+</form>

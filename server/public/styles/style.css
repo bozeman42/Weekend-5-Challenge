@@ -20,10 +20,10 @@
   visibility: hidden;
 }
 
-#submitPropertyBtn{
+.delete-button {
   float: right;
 }
 
-.delete-button {
+.form-button {
   float: right;
 }

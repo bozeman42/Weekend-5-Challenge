@@ -13,5 +13,7 @@ app.controller('SaleController', function(RealEstateService){
     console.log(id);
     rs.deleteProperty(id,'listing');
   };
-
+  sc.editProperty = function(property){
+    rs.editProperty(property,'listing');
+  };
 });
