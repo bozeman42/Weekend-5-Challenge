@@ -24,6 +24,7 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "express": "^4.16.2",
-    "mongoose": "^4.13.0"
+    "mongoose": "^4.13.0",
+    "sweetalert": "^2.0.8"
   }
 }

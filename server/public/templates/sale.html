@@ -6,7 +6,8 @@
         <p><strong>Cost:</strong> {{listing.cost | currency}}</p>
         <p><strong>Floor Area:</strong> {{listing.sqft}} ft<sup>2</sup></p>
         <p><strong>City:</strong> {{listing.city}}</p>
-        <button ng-click="sc.deleteListing(listing._id)"class="btn btn-danger delete-button">Delete Property</button>
+        <button ng-click="sc.editProperty(listing)" class="btn btn-primary" >Edit</button>
+        <button ng-click="sc.deleteListing(listing._id)" class="btn btn-danger delete-button">Delete Property</button>
       </div>
     </div>
   </div>
