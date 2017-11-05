@@ -73,7 +73,7 @@ app.service('RealEstateService', function($http, $uibModal){
   };
   
   rs.editProperty = function(property,propertyType){
-    rs.result.propertyToEdit = property;
+    rs.result.propertyToEdit = angular.copy(property);
     rs.result.propertyToEdit.propertyType = propertyType;
     rs.result.propertyToEdit.costType = (propertyType === 'listing')?'Cost':'Rent';
     console.log(rs.result.propertyToEdit);
@@ -83,7 +83,7 @@ app.service('RealEstateService', function($http, $uibModal){
       windowTemplateUrl: 'vendors/uib/templates/modal/window.html',
       backdrop: 'static'
     }).result.then(function(result){
-      console.log('result',result);
+      rs.sendEdits(result,propertyType);
     }).catch(
       function error(reason){
         console.log('reason');
@@ -91,5 +91,15 @@ app.service('RealEstateService', function($http, $uibModal){
     );
   };
   
+  rs.sendEdits = function(property,propertyType){
+    var config = { params: {propertyType: propertyType} };
+    $http.put('/realestate',property,config)
+    .then(function(response){
+      swal('Success!','Property edits accepted.',{icon: 'success'});
+      rs.refreshProperties();
+    }).catch(function error(err){
+      console.log('Edit failed',err);
+    });
+  };
 
 });
