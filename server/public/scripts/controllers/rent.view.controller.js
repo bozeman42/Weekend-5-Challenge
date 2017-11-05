@@ -13,5 +13,7 @@ app.controller('RentController', function(RealEstateService){
     rs.deleteProperty(id,'rental');
   };
   rc.getRentals();
-
+  rc.editProperty = function(property){
+    rs.editProperty(property,'rental');
+  };
 });

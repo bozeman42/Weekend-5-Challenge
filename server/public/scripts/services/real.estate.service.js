@@ -1,10 +1,11 @@
-app.service('RealEstateService', function($http){
+app.service('RealEstateService', function($http, $uibModal){
   console.log('RealEstateService created');
 
   var rs = this;
   rs.result = {
     rentals: [],
-    listings: []
+    listings: [],
+    propertyToEdit: {},
   };
 
   rs.newProperty = {
@@ -13,6 +14,8 @@ app.service('RealEstateService', function($http){
     sqft: '',
     city: ''
   };
+
+  rs.data = {};
 
   rs.getRentals = function(){
     $http.get('/realestate/rent').then(
@@ -69,4 +72,24 @@ app.service('RealEstateService', function($http){
     });
   };
   
+  rs.editProperty = function(property,propertyType){
+    rs.result.propertyToEdit = property;
+    rs.result.propertyToEdit.propertyType = propertyType;
+    rs.result.propertyToEdit.costType = (propertyType === 'listing')?'Cost':'Rent';
+    console.log(rs.result.propertyToEdit);
+    $uibModal.open({
+      controller: 'EditModalController as ec',
+      templateUrl: 'templates/editModal.html',
+      windowTemplateUrl: 'vendors/uib/templates/modal/window.html',
+      backdrop: 'static'
+    }).result.then(function(result){
+      console.log('result',result);
+    }).catch(
+      function error(reason){
+        console.log('reason');
+      }
+    );
+  };
+  
+
 });

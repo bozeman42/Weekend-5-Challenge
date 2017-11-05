@@ -20,7 +20,10 @@
   "homepage": "https://github.com/bozeman42/Weekend-5-Challenge#readme",
   "dependencies": {
     "angular": "^1.6.6",
+    "angular-animate": "^1.6.6",
     "angular-route": "^1.6.6",
+    "angular-touch": "^1.6.6",
+    "angular-ui-bootstrap": "^2.5.6",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "express": "^4.16.2",
