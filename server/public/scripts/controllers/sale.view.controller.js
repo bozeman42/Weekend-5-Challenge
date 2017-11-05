@@ -9,6 +9,9 @@ app.controller('SaleController', function(RealEstateService){
   };
 
   sc.getListings();
-
+  sc.deleteListing = function(id){
+    console.log(id);
+    rs.deleteProperty(id,'listing');
+  };
 
 });
