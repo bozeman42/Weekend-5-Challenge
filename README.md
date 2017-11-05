@@ -26,7 +26,7 @@ There is no need to do any initial setup on the database. The following commands
 
 ## Hard Mode
 
-- [ ] Ability to delete an existing listings
+- [X] Ability to delete an existing listings
 - [X] Move all HTTP/Ajax requests to Angular Service(s)
 
 ## Pro Mode
