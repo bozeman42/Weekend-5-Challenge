@@ -17,6 +17,7 @@ app.controller('RentController', function(RealEstateService){
   
   rc.editRental = function(property){
     rs.editProperty(property,'rental');
+    rs.getRentalRange();
   };
   
   rc.searchRentals = function(keyword,searchRange,searchAreaRange){
