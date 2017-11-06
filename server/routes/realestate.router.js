@@ -185,6 +185,7 @@ router.get('/search',function(req,res){
   }
 });
 
+// get the rental property with the lowest rent
 router.get('/rent/featured',function(req,res){
   Rental.findOne().sort({rent: 1}).exec(function(err,featuredRental){
     if (err) {
@@ -197,6 +198,7 @@ router.get('/rent/featured',function(req,res){
   });
 });
 
+// get the sale listing with the lowest price
 router.get('/sale/featured',function(req,res){
   Listing.findOne().sort({cost: 1}).exec(function(err,featuredListing){
     if (err) {
@@ -210,7 +212,7 @@ router.get('/sale/featured',function(req,res){
 });
 
 
-// return the minimum and maximum rent
+// return the minimum and maximum rent and area
 router.get('/rent/range',function(req,res){
   var returnObject = {
     min: '',
@@ -260,6 +262,7 @@ router.get('/rent/range',function(req,res){
   });
 });
 
+// return the minimum and maximum price and area
 router.get('/sale/range',function(req,res){
   var returnObject = {
     min: '',
