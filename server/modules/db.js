@@ -3,6 +3,7 @@ var databaseUrl = '';
 
 if (process.env.MONGODB_URI != undefined){
   databaseUrl = process.env.MONGODB_URI;
+  console.log('Used heroku URI');
 } else {
   databaseUrl = 'mongodb://localhost:27017/realestate';
 }
