@@ -103,6 +103,11 @@ app.service('RealEstateService', function($http, $uibModal){
     $http.post('/realestate',newProperty)
     .then(function success(response){
       console.log('Successfully POSTed new property');
+      rs.newProperty.propertyType = '';
+      rs.newProperty.cost = '';
+      rs.newProperty.sqft = '';
+      rs.newProperty.city = '';
+      swal('Success','New Property Added!',{icon: 'success'});
     })
     .catch(function failure(err){
       console.log('POST failed',err);
@@ -114,7 +119,11 @@ app.service('RealEstateService', function($http, $uibModal){
     $http.delete('/realestate', config)
     .then(function success(response){
       console.log('Property deleted');
-      rs.refreshProperties();
+      if (propertyType === 'rental'){
+        rs.getRentals();
+      } else if (propertyType === "listing") {
+        rs.getListings();
+      }
     }).catch(function error(err){
       console.log('Failed to delete property');
     });
@@ -143,8 +152,12 @@ app.service('RealEstateService', function($http, $uibModal){
     var config = { params: {propertyType: propertyType} };
     $http.put('/realestate',property,config)
     .then(function(response){
+      if (propertyType === 'rental'){
+        rs.getRentals();
+      } else if (propertyType === "listing") {
+        rs.getListings();
+      }
       swal('Success!','Property edits accepted.',{icon: 'success'});
-      rs.refreshProperties();
     }).catch(function error(err){
       console.log('Edit failed',err);
     });
