@@ -6,6 +6,15 @@ app.service('RealEstateService', function($http, $uibModal){
     rentals: [],
     listings: [],
     propertyToEdit: {},
+    searchTerm: '',
+    rentalRange: {min: 0, max: 0},
+    listingRange: {min: 0, max: 0},
+    searchRange: {min: 0, max: 0},
+    rentalAreaRange: {min: 0, max: 0},
+    listingAreaRange: {min: 0, max: 0},
+    searchAreaRange: {min: 0, max: 0},
+    featuredListing: {},
+    featuredRental: {}
   };
 
   rs.newProperty = {
@@ -18,37 +27,76 @@ app.service('RealEstateService', function($http, $uibModal){
   rs.data = {};
 
   rs.getRentals = function(){
-    $http.get('/realestate/rent').then(
-      function success(response){
-        console.log('rentals', response.data);
-        rs.result.rentals = response.data;
-      }
-    )
-    .catch(
-      function error(error){
-        console.log(error);
-      }
-    );
+    $http.get('/realestate/rent')
+    .then(function success(response){
+      console.log('rentals', response.data);
+      rs.result.rentals = response.data;
+      rs.getRentalRange();
+    })
+    .catch(function error(error){
+      console.log(error);
+    });
+    $http.get('/realestate/rent/featured')
+    .then(function success(response){
+      rs.result.featuredRental = response.data;
+    })
+    .catch(function error(err){
+      console.log(err);
+    });
   };
 
   rs.getListings = function(){
-    $http.get('/realestate/sale').then(
-      function success(response){
-        console.log('listings',response.data);
-        rs.result.listings = response.data;
-      }
-    )
-    .catch(
-      function error(error){
-        console.log(error);
-      }
-    );
+    $http.get('/realestate/sale')
+    .then(function success(response){
+      console.log('listings',response.data);
+      rs.result.listings = response.data;
+      rs.getListingRange();
+    })
+    .catch(function error(error){
+      console.log(error);
+    });
+    $http.get('/realestate/sale/featured')
+    .then(function success(response){
+      rs.result.featuredListing = response.data;
+    })
+    .catch(function error(err){
+      console.log(err);
+    });
+  };
+
+  rs.getRentalRange = function(){
+    $http.get('/realestate/rent/range')
+    .then(function success(response){
+      rs.result.rentalRange = response.data;
+      rs.result.searchRange.min = rs.result.rentalRange.min;
+      rs.result.searchRange.max = rs.result.rentalRange.max;
+      rs.result.searchAreaRange.min = rs.result.rentalRange.minsqft;
+      rs.result.searchAreaRange.max = rs.result.rentalRange.maxsqft;
+      console.log('search range',rs.result.searchRange);
+    })
+    .catch(function error(){
+      console.log('failed to get range',error);
+    });
+  };
+
+  rs.getListingRange = function(){
+    $http.get('/realestate/sale/range')
+    .then(function success(response){
+      rs.result.listingRange = response.data;
+      rs.result.searchRange.min = rs.result.listingRange.min;
+      rs.result.searchRange.max = rs.result.listingRange.max;
+      rs.result.searchAreaRange.min = rs.result.listingRange.minsqft;
+      rs.result.searchAreaRange.max = rs.result.listingRange.maxsqft;
+      console.log('listing range', rs.result.listingRange);
+    }).catch(function error(){
+      console.log('failed to get range',error);
+    });
   };
 
   rs.refreshProperties = function(){
     rs.getListings();
     rs.getRentals();
-  }
+  };
 
   rs.addNewProperty = function(newProperty){
 
@@ -102,4 +150,29 @@ app.service('RealEstateService', function($http, $uibModal){
     });
   };
 
+  rs.searchProperties = function(keyword,searchRange,searchAreaRange,propertyType){
+    var config = {
+      params: {
+        keyword: keyword,
+        propertyType: propertyType,
+        min: searchRange.min,
+        max: searchRange.max,
+        minArea: searchAreaRange.min,
+        maxArea: searchAreaRange.max
+      }
+    };
+    $http.get('/realestate/search',config)
+    .then(function success(response){
+      console.log('Search response for',keyword + ':',response);
+      var data = response.data;
+      if (propertyType === 'rental'){
+        rs.result.rentals = data;
+      } else if (propertyType === 'listing'){
+        rs.result.listings = data;
+      }
+    }).catch(function error(err){
+      console.log('Search failed');
+    });
+  };
+  rs.refreshProperties();
 });
