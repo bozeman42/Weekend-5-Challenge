@@ -7,6 +7,7 @@ app.controller('SaleController', function(RealEstateService){
 
   sc.getListings = function(){
     rs.getListings();
+    sc.getListingRange();
   };
 
   sc.deleteListing = function(id){
@@ -18,15 +19,19 @@ app.controller('SaleController', function(RealEstateService){
     rs.editProperty(property,'listing');
   };
   
-  sc.searchListings = function(keyword){
+  sc.searchListings = function(keyword,searchRange){
     console.log('search listings',keyword);
-    rs.searchProperties(keyword,'listing');
+    rs.searchProperties(keyword,searchRange,'listing');
   };
   
   sc.clearSearch = function(){
     sc.getListings();
     sc.result.searchTerm = '';
   }
+
+  sc.getListingRange = function(){
+    rs.getListingRange();
+  };
 
   sc.getListings();
 });

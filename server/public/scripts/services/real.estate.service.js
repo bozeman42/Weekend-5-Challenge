@@ -6,7 +6,10 @@ app.service('RealEstateService', function($http, $uibModal){
     rentals: [],
     listings: [],
     propertyToEdit: {},
-    searchTerm: ''
+    searchTerm: '',
+    rentalRange: {min: 0, max: 0},
+    listingRange: {min: 0, max: 0},
+    searchRange: {min: 0, max: 0}
   };
 
   rs.newProperty = {
@@ -23,6 +26,7 @@ app.service('RealEstateService', function($http, $uibModal){
       function success(response){
         console.log('rentals', response.data);
         rs.result.rentals = response.data;
+        rs.getRentalRange();
       }
     )
     .catch(
@@ -37,6 +41,7 @@ app.service('RealEstateService', function($http, $uibModal){
       function success(response){
         console.log('listings',response.data);
         rs.result.listings = response.data;
+        rs.getListingRange();
       }
     )
     .catch(
@@ -46,10 +51,33 @@ app.service('RealEstateService', function($http, $uibModal){
     );
   };
 
+  rs.getRentalRange = function(){
+    $http.get('/realestate/rent/range')
+    .then(function success(response){
+      rs.result.rentalRange = response.data;
+      rs.result.searchRange.min = rs.result.rentalRange.min;
+      rs.result.searchRange.max = rs.result.rentalRange.max;
+      console.log('search range',rs.result.searchRange);
+    }).catch(function error(){
+      console.log('failed to get range',error);
+    });
+  };
+
+  rs.getListingRange = function(){
+    $http.get('/realestate/sale/range')
+    .then(function success(response){
+      rs.result.listingRange = response.data;
+      console.log('listing range', rs.result.listingRange);
+    }).catch(function error(){
+      console.log('failed to get range',error);
+    });
+  };
+
   rs.refreshProperties = function(){
     rs.getListings();
     rs.getRentals();
-  }
+
+  };
 
   rs.addNewProperty = function(newProperty){
 
@@ -103,8 +131,8 @@ app.service('RealEstateService', function($http, $uibModal){
     });
   };
 
-  rs.searchProperties = function(keyword,propertyType){
-    var config = {params: {keyword: keyword, propertyType: propertyType}};
+  rs.searchProperties = function(keyword,searchRange,propertyType){
+    var config = {params: {keyword: keyword, propertyType: propertyType, min: searchRange.min, max: searchRange.max}};
     $http.get('/realestate/search',config)
     .then(function success(response){
       console.log('Search response for',keyword + ':',response);
@@ -118,5 +146,5 @@ app.service('RealEstateService', function($http, $uibModal){
       console.log('Search failed');
     });
   };
-
+  rs.refreshProperties();
 });

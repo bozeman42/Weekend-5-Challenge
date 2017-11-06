@@ -142,9 +142,15 @@ router.put('/',function(req,res){
 
 router.get('/search',function(req,res){
   var keyword = new RegExp(req.query.keyword,'i');
+  var min = req.query.min;
+  var max = req.query.max;
+  console.log('min',min,'max',max);
   var propertyType = req.query.propertyType;
   if (propertyType === 'rental'){
-    Rental.find({city: keyword}, function(err, data){
+    Rental.find({
+      city: keyword,
+      rent: {$gte: min, $lte: max}
+    }, function(err, data){
       if (err){
           console.log('Error',err);
           res.sendStatus(500);
@@ -154,7 +160,13 @@ router.get('/search',function(req,res){
       }
     });
   } else if (propertyType === 'listing'){
-    Listing.find({city: keyword}, function(err, data){
+    Listing.find({
+      city: keyword,
+      $and: [
+        {cost: {$gte: min}},
+        {cost: {$lte: max}}
+      ]
+    }, function(err, data){
       if (err){
         console.log('Error',err);
         res.sendStatus(500);
@@ -196,12 +208,14 @@ router.get('/rent/range',function(req,res){
     min: '',
     max: ''
   };
+  console.log('getting rental range');
   Rental.findOne().sort({rent: 1}).exec(function(err,minRental){
     if (err) {
       console.log('Failed to GET minimum rental price');
       res.sendStatus(500);
     } else {
-      console.log('Got rentals');
+      console.log('Got minRental');
+      console.log(minRental.rent);
       returnObject.min = minRental.rent;
       Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
         if (err) {
@@ -210,6 +224,7 @@ router.get('/rent/range',function(req,res){
         } else {
           console.log('Got rental range');
           returnObject.max = maxRental.rent;
+          console.log(returnObject);
           res.send(returnObject);
         }
       });
@@ -222,20 +237,20 @@ router.get('/sale/range',function(req,res){
     min: '',
     max: ''
   };
-  Listing.findOne().sort({rent: 1}).exec(function(err,minListing){
+  Listing.findOne().sort({cost: 1}).exec(function(err,minListing){
     if (err) {
       console.log('Failed to GET min listing price');
       res.sendStatus(500);
     } else {
-      console.log('Got rentals');
-      returnObject.min = minListing.rent;
-      Rental.findOne().sort({rent: -1}).exec(function(err,maxListing){
+      console.log('Got listings', minListing);
+      returnObject.min = minListing.cost;
+      Listing.findOne().sort({cost: -1}).exec(function(err,maxListing){
         if (err) {
           console.log('Failed to GET max listing price');
           res.sendStatus(500);
         } else {
           console.log('Got listing range');
-          returnObject.max = maxListing.rent;
+          returnObject.max = maxListing.cost;
           res.send(returnObject);
         }
       });
