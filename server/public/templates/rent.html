@@ -45,7 +45,7 @@
       <p><strong>Floor Area:</strong> {{rc.result.featuredRental.sqft}} ft<sup>2</sup></p>
       <p><strong>City:</strong> {{rc.result.featuredRental.city}}</p>
       <button ng-click="rc.editRental(rc.result.featuredRental)" class="btn btn-primary">Edit</button>
-      <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
+      <button ng-click="rc.deleteRental(rc.result.featuedRental._id)"class="btn btn-danger delete-button">Delete Property</button>
     </div>
   </div>
   <div ng-repeat="rental in rc.result.rentals" class="col-md-4 col-sm-6">

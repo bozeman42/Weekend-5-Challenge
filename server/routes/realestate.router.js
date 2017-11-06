@@ -19,7 +19,6 @@ router.get('/rent',function(req,res){
       console.log('Failed to GET rentals');
       res.sendStatus(500);
     } else {
-      console.log('Got rentals');
       res.send(foundRentals);
     }
   });
@@ -33,7 +32,6 @@ router.get('/sale',function(req,res){
       console.log('Failed to GET listings');
       res.sendStatus(500);
     } else {
-      console.log('Got listings');
       res.send(foundListings);
     }
   });
@@ -63,7 +61,6 @@ router.get('/sale',function(req,res){
 // }
 
 router.post('/',function(req,res){
-  console.log('req.body',req.body);
   var property = req.body;
   if (property.propertyType === 'rent'){
     var propertyToAdd = new Rental({rent: property.cost, sqft: property.sqft, city: property.city});
@@ -82,8 +79,6 @@ router.post('/',function(req,res){
 
 // delete the selected property
 router.delete('/', function(req,res){
-  console.log('In the delete route');
-  console.log(req.query);
   var property = req.query;
   if (property.propertyType === 'rental'){
     Rental.findByIdAndRemove({ "_id": property.id }, function (err, data) {
@@ -91,7 +86,6 @@ router.delete('/', function(req,res){
         console.log(err);
         res.sendStatus(500);
       } else {
-        console.log('deleted',data);
         res.sendStatus(200);
       }
     });
@@ -101,7 +95,6 @@ router.delete('/', function(req,res){
         console.log(err);
         res.sendStatus(500);
       } else {
-        console.log('deleted',data);
         res.sendStatus(200);
       }
     });
@@ -114,8 +107,6 @@ router.delete('/', function(req,res){
 router.put('/',function(req,res){
   var propertyType = req.query.propertyType;
   var property = req.body;
-  console.log(req.body);
-  console.log('property type',propertyType);
   if (propertyType === 'rental'){
     Rental.findByIdAndUpdate(property._id,property, function(err, data){
       if (err){
@@ -123,7 +114,6 @@ router.put('/',function(req,res){
           res.sendStatus(500);
       } else {
           res.sendStatus(200);
-          console.log('Rental updated',data);
       }
     });
   } else if (propertyType === 'listing'){
@@ -133,7 +123,6 @@ router.put('/',function(req,res){
           res.sendStatus(500);
       } else {
           res.sendStatus(200);
-          console.log('Listing updated',data);
       }
     });
   } else {
@@ -149,7 +138,6 @@ router.get('/search',function(req,res){
   var max = req.query.max;
   var minArea = req.query.minArea;
   var maxArea = req.query.maxArea;
-  console.log('min',min,'max',max);
   var propertyType = req.query.propertyType;
   if (propertyType === 'rental'){
     Rental.find({
@@ -161,7 +149,6 @@ router.get('/search',function(req,res){
           console.log('Error',err);
           res.sendStatus(500);
       } else {
-          console.log('sending',data);
           res.send(data);
       }
     });
@@ -175,7 +162,6 @@ router.get('/search',function(req,res){
         console.log('Error',err);
         res.sendStatus(500);
       } else {
-        console.log('sending',data);
         res.send(data);
       }
     });
@@ -192,7 +178,6 @@ router.get('/rent/featured',function(req,res){
       console.log('Failed to GET rentals');
       res.sendStatus(500);
     } else {
-      console.log('Got rentals');
       res.send(featuredRental);
     }
   });
@@ -205,7 +190,6 @@ router.get('/sale/featured',function(req,res){
       console.log('Failed to GET rentals');
       res.sendStatus(500);
     } else {
-      console.log('Got listing');
       res.send(featuredListing);
     }
   });
@@ -218,39 +202,28 @@ router.get('/rent/range',function(req,res){
     min: '',
     max: ''
   };
-  console.log('getting rental range');
   Rental.findOne().sort({rent: 1}).exec(function(err,minRental){
     if (err) {
-      console.log('Failed to GET minimum rental price');
       res.sendStatus(500);
     } else {
-      console.log('Got minRental');
-      console.log(minRental.rent);
       returnObject.min = minRental.rent;
       Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
         if (err) {
-          console.log('Failed to GET max rental price');
           res.sendStatus(500);
         } else {
-          console.log('Got rental range');
           returnObject.max = maxRental.rent;
-          console.log(returnObject);
           Rental.findOne().sort({sqft: 1}).exec(function(err,minRental){
             if (err) {
-              console.log('Failed to GET minimum rental price');
+              console.log('Failed to GET minimum rental area');
               res.sendStatus(500);
             } else {
-              console.log('Got minRental');
-              console.log(minRental.sqft);
               returnObject.minsqft = minRental.sqft;
               Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
                 if (err) {
-                  console.log('Failed to GET max rental price');
+                  console.log('Failed to GET max rental area');
                   res.sendStatus(500);
                 } else {
-                  console.log('Got rental range');
                   returnObject.maxsqft = maxRental.sqft;
-                  console.log(returnObject);
                   res.send(returnObject);
                 }
               });
@@ -273,28 +246,24 @@ router.get('/sale/range',function(req,res){
       console.log('Failed to GET min listing price');
       res.sendStatus(500);
     } else {
-      console.log('Got listings', minListing);
       returnObject.min = minListing.cost;
       Listing.findOne().sort({cost: -1}).exec(function(err,maxListing){
         if (err) {
           console.log('Failed to GET max listing price');
           res.sendStatus(500);
         } else {
-          console.log('Got listing range');
           returnObject.max = maxListing.cost;
           Listing.findOne().sort({sqft: 1}).exec(function(err,minListing){
             if (err) {
               console.log('Failed to GET min listing price');
               res.sendStatus(500);
             } else {
-              console.log('Got listings', minListing);
               returnObject.minsqft = minListing.sqft;
               Listing.findOne().sort({sqft: -1}).exec(function(err,maxListing){
                 if (err) {
                   console.log('Failed to GET max listing price');
                   res.sendStatus(500);
                 } else {
-                  console.log('Got listing range');
                   returnObject.maxsqft = maxListing.sqft;
                   res.send(returnObject);
                 }

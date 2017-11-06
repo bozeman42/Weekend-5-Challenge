@@ -10,7 +10,6 @@ app.controller('RentController', function(RealEstateService){
   };
 
   rc.deleteRental = function(id){
-    console.log(id);
     rs.deleteProperty(id,'rental');
   };
 
@@ -21,7 +20,6 @@ app.controller('RentController', function(RealEstateService){
   };
   
   rc.searchRentals = function(keyword,searchRange,searchAreaRange){
-    console.log('search rentals',keyword);
     rs.searchProperties(keyword,searchRange,searchAreaRange,'rental');
   };
   

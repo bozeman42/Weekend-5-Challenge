@@ -45,7 +45,7 @@
           <p><strong>Floor Area:</strong> {{sc.result.featuredListing.sqft}} ft<sup>2</sup></p>
           <p><strong>City:</strong> {{sc.result.featuredListing.city}}</p>
           <button ng-click="sc.editListing(sc.result.featuredListing)" class="btn btn-primary">Edit</button>
-          <button ng-click="sc.deleteListing(Listing._id)"class="btn btn-danger delete-button">Delete Property</button>
+          <button ng-click="sc.deleteListing(sc.result.featuredListing._id)"class="btn btn-danger delete-button">Delete Property</button>
         </div>
       </div>
     <div ng-repeat="listing in sc.result.listings" class="col-md-4 col-sm-6">

@@ -29,7 +29,6 @@ app.service('RealEstateService', function($http, $uibModal){
   rs.getRentals = function(){
     $http.get('/realestate/rent')
     .then(function success(response){
-      console.log('rentals', response.data);
       rs.result.rentals = response.data;
       rs.getRentalRange();
     })
@@ -48,7 +47,6 @@ app.service('RealEstateService', function($http, $uibModal){
   rs.getListings = function(){
     $http.get('/realestate/sale')
     .then(function success(response){
-      console.log('listings',response.data);
       rs.result.listings = response.data;
       rs.getListingRange();
     })
@@ -72,7 +70,6 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.result.searchRange.max = rs.result.rentalRange.max;
       rs.result.searchAreaRange.min = rs.result.rentalRange.minsqft;
       rs.result.searchAreaRange.max = rs.result.rentalRange.maxsqft;
-      console.log('search range',rs.result.searchRange);
     })
     .catch(function error(){
       console.log('failed to get range',error);
@@ -87,7 +84,6 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.result.searchRange.max = rs.result.listingRange.max;
       rs.result.searchAreaRange.min = rs.result.listingRange.minsqft;
       rs.result.searchAreaRange.max = rs.result.listingRange.maxsqft;
-      console.log('listing range', rs.result.listingRange);
     }).catch(function error(){
       console.log('failed to get range',error);
     });
@@ -102,7 +98,6 @@ app.service('RealEstateService', function($http, $uibModal){
 
     $http.post('/realestate',newProperty)
     .then(function success(response){
-      console.log('Successfully POSTed new property');
       rs.newProperty.propertyType = '';
       rs.newProperty.cost = '';
       rs.newProperty.sqft = '';
@@ -118,12 +113,12 @@ app.service('RealEstateService', function($http, $uibModal){
     var config = { params: { id: id, propertyType: propertyType} };
     $http.delete('/realestate', config)
     .then(function success(response){
-      console.log('Property deleted');
       if (propertyType === 'rental'){
         rs.getRentals();
       } else if (propertyType === "listing") {
         rs.getListings();
       }
+      swal('DELETED','Property Deleted.',{icon: 'success'});
     }).catch(function error(err){
       console.log('Failed to delete property');
     });
@@ -133,7 +128,6 @@ app.service('RealEstateService', function($http, $uibModal){
     rs.result.propertyToEdit = angular.copy(property);
     rs.result.propertyToEdit.propertyType = propertyType;
     rs.result.propertyToEdit.costType = (propertyType === 'listing')?'Cost':'Rent';
-    console.log(rs.result.propertyToEdit);
     $uibModal.open({
       controller: 'EditModalController as ec',
       templateUrl: 'templates/editModal.html',
@@ -143,7 +137,7 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.sendEdits(result,propertyType);
     }).catch(
       function error(reason){
-        console.log('reason');
+        console.log(reason);
       }
     );
   };
@@ -176,7 +170,6 @@ app.service('RealEstateService', function($http, $uibModal){
     };
     $http.get('/realestate/search',config)
     .then(function success(response){
-      console.log('Search response for',keyword + ':',response);
       var data = response.data;
       if (propertyType === 'rental'){
         rs.result.rentals = data;

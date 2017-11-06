@@ -11,7 +11,6 @@ app.controller('SaleController', function(RealEstateService){
   };
 
   sc.deleteListing = function(id){
-    console.log(id);
     rs.deleteProperty(id,'listing');
   };
   
@@ -20,7 +19,6 @@ app.controller('SaleController', function(RealEstateService){
   };
   
   sc.searchListings = function(keyword,searchRange,searchAreaRange){
-    console.log('search listings',keyword);
     rs.searchProperties(keyword,searchRange,searchAreaRange,'listing');
   };
   
