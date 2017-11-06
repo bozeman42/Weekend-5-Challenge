@@ -6,6 +6,7 @@ app.service('RealEstateService', function($http, $uibModal){
     rentals: [],
     listings: [],
     propertyToEdit: {},
+    searchTerm: ''
   };
 
   rs.newProperty = {
@@ -99,6 +100,22 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.refreshProperties();
     }).catch(function error(err){
       console.log('Edit failed',err);
+    });
+  };
+
+  rs.searchProperties = function(keyword,propertyType){
+    var config = {params: {keyword: keyword, propertyType: propertyType}};
+    $http.get('/realestate/search',config)
+    .then(function success(response){
+      console.log('Search response for',keyword + ':',response);
+      var data = response.data;
+      if (propertyType === 'rental'){
+        rs.result.rentals = data;
+      } else if (propertyType === 'listing'){
+        rs.result.listings = data;
+      }
+    }).catch(function error(err){
+      console.log('Search failed');
     });
   };
 

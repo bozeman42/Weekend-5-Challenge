@@ -12,8 +12,21 @@ app.controller('RentController', function(RealEstateService){
     console.log(id);
     rs.deleteProperty(id,'rental');
   };
-  rc.getRentals();
-  rc.editProperty = function(property){
+
+  
+  rc.editRental = function(property){
     rs.editProperty(property,'rental');
   };
+  
+  rc.searchRentals = function(keyword){
+    console.log('search rentals',keyword);
+    rs.searchProperties(keyword,'rental');
+  };
+  
+  rc.clearSearch = function(){
+    rc.getRentals();
+    rc.result.searchTerm = '';
+  };
+  
+  rc.getRentals();
 });

@@ -4,10 +4,10 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var RentalSchema = new Schema({rent: Number, sqft: Number, city: String});
+var RentalSchema = new Schema({rent: Number, sqft: Number, city: String}, { collation: { locale: 'en_US', strength: 2 } });
 var Rental = mongoose.model('Rental', RentalSchema, 'rentals');
 
-var ListingSchema = new Schema({cost: Number, sqft: Number, city: String});
+var ListingSchema = new Schema({cost: Number, sqft: Number, city: String}, { collation: { locale: 'en_US', strength: 2 } });
 var Listing = mongoose.model('Listing', ListingSchema, 'listings');
 
 
@@ -140,7 +140,107 @@ router.put('/',function(req,res){
   }
 });
 
+router.get('/search',function(req,res){
+  var keyword = new RegExp(req.query.keyword,'i');
+  var propertyType = req.query.propertyType;
+  if (propertyType === 'rental'){
+    Rental.find({city: keyword}, function(err, data){
+      if (err){
+          console.log('Error',err);
+          res.sendStatus(500);
+      } else {
+          console.log('sending',data);
+          res.send(data);
+      }
+    });
+  } else if (propertyType === 'listing'){
+    Listing.find({city: keyword}, function(err, data){
+      if (err){
+        console.log('Error',err);
+        res.sendStatus(500);
+      } else {
+        console.log('sending',data);
+        res.send(data);
+      }
+    });
+  } else {
+    console.log('Improper property type.');
+    res.sendStatus(500);
+  }
+  // Game.find({name: searchTerm}, function(err,foundGames){
+  //     if (err) {
+  //         console.log('Search failed',err);
+  //         sendStatus(500);
+  //     } else {
+  //         res.send(foundGames);
+  //     }
+  // });
+});
+
+router.get('/rent/cheapest',function(req,res){
+  Rental.findOne().sort({rent: 1}).exec(function(err,cheapestRental){
+    if (err) {
+      console.log('Failed to GET rentals');
+      res.sendStatus(500);
+    } else {
+      console.log('Got rentals');
+      res.send(cheapestRental);
+    }
+  });
+});
 
 
+// return the minimum and maximum rent
+router.get('/rent/range',function(req,res){
+  var returnObject = {
+    min: '',
+    max: ''
+  };
+  Rental.findOne().sort({rent: 1}).exec(function(err,minRental){
+    if (err) {
+      console.log('Failed to GET minimum rental price');
+      res.sendStatus(500);
+    } else {
+      console.log('Got rentals');
+      returnObject.min = minRental.rent;
+      Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
+        if (err) {
+          console.log('Failed to GET max rental price');
+          res.sendStatus(500);
+        } else {
+          console.log('Got rental range');
+          returnObject.max = maxRental.rent;
+          res.send(returnObject);
+        }
+      });
+    }
+  });
+});
+
+router.get('/sale/range',function(req,res){
+  var returnObject = {
+    min: '',
+    max: ''
+  };
+  Listing.findOne().sort({rent: 1}).exec(function(err,minListing){
+    if (err) {
+      console.log('Failed to GET min listing price');
+      res.sendStatus(500);
+    } else {
+      console.log('Got rentals');
+      returnObject.min = minListing.rent;
+      Rental.findOne().sort({rent: -1}).exec(function(err,maxListing){
+        if (err) {
+          console.log('Failed to GET max listing price');
+          res.sendStatus(500);
+        } else {
+          console.log('Got listing range');
+          returnObject.max = maxListing.rent;
+          res.send(returnObject);
+        }
+      });
+    }
+  });
+});
 
 module.exports = router;

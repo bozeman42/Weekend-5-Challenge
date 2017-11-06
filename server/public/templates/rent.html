@@ -1,12 +1,22 @@
 <!-- RentController as rc -->
 <h1>Properties for Rent</h1>
 <div class="propertiesView">
+  <div class="searchDiv">
+    <form ng-submit="rc.searchRentals(rc.result.searchTerm)">
+      <div class="form-group">
+        <label for="searchBox">Search:</label>
+        <input id="searchBox" name="searchBox" ng-model="rc.result.searchTerm" placeholder="Search...">
+        <button type="submit" class="btn btn-primary" >Search</button>
+        <button type="button" class="btn btn-secondary" ng-click="rc.clearSearch()">Clear Search</button>
+      </div>
+    </form>
+  </div>
   <div ng-repeat="rental in rc.result.rentals" class="col-md-4 col-sm-6">
     <div class="propertyDiv">
       <p><strong>Rent:</strong> {{rental.rent | currency}}</p>
       <p><strong>Floor Area:</strong> {{rental.sqft}} ft<sup>2</sup></p>
       <p><strong>City:</strong> {{rental.city}}</p>
-      <button ng-click="rc.editProperty(rental)" class="btn btn-primary">Edit</button>
+      <button ng-click="rc.editRental(rental)" class="btn btn-primary">Edit</button>
       <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
     </div>
   </div>

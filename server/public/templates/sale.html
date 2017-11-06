@@ -1,12 +1,22 @@
 <!-- SaleController as sc -->
 <h1>Properties for Sale</h1>
 <div class="propertiesView">
+    <div class="searchDiv">
+        <form ng-submit="sc.searchListings(sc.result.searchTerm)">
+          <div class="form-group">
+            <label for="searchBox">Search:</label>
+            <input id="searchBox" name="searchBox" ng-model="sc.result.searchTerm" placeholder="Search...">
+            <button type="submit" class="btn btn-primary" >Search</button>
+            <button type="button" class="btn btn-secondary" ng-click="sc.clearSearch()">Clear Search</button>
+          </div>
+        </form>
+      </div>
     <div ng-repeat="listing in sc.result.listings" class="col-md-4 col-sm-6">
       <div class="propertyDiv">
         <p><strong>Cost:</strong> {{listing.cost | currency}}</p>
         <p><strong>Floor Area:</strong> {{listing.sqft}} ft<sup>2</sup></p>
         <p><strong>City:</strong> {{listing.city}}</p>
-        <button ng-click="sc.editProperty(listing)" class="btn btn-primary" >Edit</button>
+        <button ng-click="sc.editListing(listing)" class="btn btn-primary" >Edit</button>
         <button ng-click="sc.deleteListing(listing._id)" class="btn btn-danger delete-button">Delete Property</button>
       </div>
     </div>
