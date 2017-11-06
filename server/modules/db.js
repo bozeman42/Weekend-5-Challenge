@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
+var databaseUrl = '';
+
 if (process.env.MONGODB_URI != undefined){
-  databaseUrl = proceass.eng.MONGODB_URI;
+  databaseUrl = process.eng.MONGODB_URI;
 } else {
   databaseUrl = 'mongodb://localhost:27017/realestate';
 }
