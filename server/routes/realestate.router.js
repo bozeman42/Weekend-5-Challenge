@@ -11,32 +11,6 @@ var ListingSchema = new Schema({cost: Number, sqft: Number, city: String}, { col
 var Listing = mongoose.model('Listing', ListingSchema, 'listings');
 
 
-// GET /rent
-// return rental listings to the client
-router.get('/rent',function(req,res){
-  Rental.find({}, function(err,foundRentals){
-    if (err) {
-      console.log('Failed to GET rentals');
-      res.sendStatus(500);
-    } else {
-      res.send(foundRentals);
-    }
-  });
-});
-
-// GET /sale
-// return sale listings to client
-router.get('/sale',function(req,res){
-  Listing.find({}, function(err,foundListings){
-    if (err) {
-      console.log('Failed to GET listings');
-      res.sendStatus(500);
-    } else {
-      res.send(foundListings);
-    }
-  });
-});
-
 // POST /
 // receives an object in the form
 // {
@@ -76,7 +50,7 @@ router.post('/',function(req,res){
     }
   });
 });
-
+// LISTING ROUTER NEEDS THE THINGS BELOW! 
 // delete the selected property
 router.delete('/', function(req,res){
   var property = req.query;
