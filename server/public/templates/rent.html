@@ -2,12 +2,22 @@
 <h1>Properties for Rent</h1>
 <div class="propertiesView">
   <div class="searchDiv">
-    <form ng-submit="rc.searchRentals(rc.result.searchTerm)">
+    <form ng-submit="rc.searchRentals(rc.result.searchTerm,rc.result.searchRange,rc.result.searchAreaRange)">
       <div class="form-group">
         <label for="searchBox">Search:</label>
         <input id="searchBox" name="searchBox" ng-model="rc.result.searchTerm" placeholder="Search...">
-        <button type="submit" class="btn btn-primary" >Search</button>
-        <button type="button" class="btn btn-secondary" ng-click="rc.clearSearch()">Clear Search</button>
+      </div>
+      <div class="form-group">
+          <label for="minPrice">Minimum price: $</label>
+          <input name="minPrice" type="number" ng-model="rc.result.searchRange.min" required>
+          <label for="maxPrice">Maximum price: $</label>
+          <input name="maxPrice" type="number" ng-model="rc.result.searchRange.max" required>
+          <label for="minArea">Minimum area: </label>
+          <input name="minArea" type="number" ng-model="rc.result.searchAreaRange.min" required>ft<sup>2</sup>
+          <label for="maxArea">Maximum area: </label>
+          <input name="maxArea" type="number" ng-model="rc.result.searchAreaRange.max" required>ft<sup>2</sup>
+          <button type="submit" class="btn btn-primary" >Search</button>
+          <button type="button" class="btn btn-secondary" ng-click="rc.clearSearch()">Clear Search</button>
       </div>
     </form>
   </div>

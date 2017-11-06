@@ -6,6 +6,7 @@ app.controller('RentController', function(RealEstateService){
   rc.result = rs.result;
   rc.getRentals = function(){
     rs.getRentals();
+    rc.getRentRange();
   };
 
   rc.deleteRental = function(id){
@@ -18,15 +19,18 @@ app.controller('RentController', function(RealEstateService){
     rs.editProperty(property,'rental');
   };
   
-  rc.searchRentals = function(keyword){
+  rc.searchRentals = function(keyword,searchRange,searchAreaRange){
     console.log('search rentals',keyword);
-    rs.searchProperties(keyword,'rental');
+    rs.searchProperties(keyword,searchRange,searchAreaRange,'rental');
   };
   
   rc.clearSearch = function(){
     rc.getRentals();
     rc.result.searchTerm = '';
   };
-  
+
+  rc.getRentRange = function(){
+    rs.getRentalRange();
+  };
   rc.getRentals();
 });
