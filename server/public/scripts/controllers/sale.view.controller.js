@@ -19,9 +19,9 @@ app.controller('SaleController', function(RealEstateService){
     rs.editProperty(property,'listing');
   };
   
-  sc.searchListings = function(keyword,searchRange){
+  sc.searchListings = function(keyword,searchRange,searchAreaRange){
     console.log('search listings',keyword);
-    rs.searchProperties(keyword,searchRange,'listing');
+    rs.searchProperties(keyword,searchRange,searchAreaRange,'listing');
   };
   
   sc.clearSearch = function(){

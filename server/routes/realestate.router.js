@@ -144,12 +144,15 @@ router.get('/search',function(req,res){
   var keyword = new RegExp(req.query.keyword,'i');
   var min = req.query.min;
   var max = req.query.max;
+  var minArea = req.query.minArea;
+  var maxArea = req.query.maxArea;
   console.log('min',min,'max',max);
   var propertyType = req.query.propertyType;
   if (propertyType === 'rental'){
     Rental.find({
       city: keyword,
-      rent: {$gte: min, $lte: max}
+      rent: {$gte: min, $lte: max},
+      sqft: {$gte: minArea, $lte: maxArea}
     }, function(err, data){
       if (err){
           console.log('Error',err);
@@ -162,10 +165,8 @@ router.get('/search',function(req,res){
   } else if (propertyType === 'listing'){
     Listing.find({
       city: keyword,
-      $and: [
-        {cost: {$gte: min}},
-        {cost: {$lte: max}}
-      ]
+      cost: {$gte: min, $lte: max},
+      sqft: {$gte: minArea, $lte: maxArea}
     }, function(err, data){
       if (err){
         console.log('Error',err);
@@ -225,7 +226,27 @@ router.get('/rent/range',function(req,res){
           console.log('Got rental range');
           returnObject.max = maxRental.rent;
           console.log(returnObject);
-          res.send(returnObject);
+          Rental.findOne().sort({sqft: 1}).exec(function(err,minRental){
+            if (err) {
+              console.log('Failed to GET minimum rental price');
+              res.sendStatus(500);
+            } else {
+              console.log('Got minRental');
+              console.log(minRental.sqft);
+              returnObject.minsqft = minRental.sqft;
+              Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
+                if (err) {
+                  console.log('Failed to GET max rental price');
+                  res.sendStatus(500);
+                } else {
+                  console.log('Got rental range');
+                  returnObject.maxsqft = maxRental.sqft;
+                  console.log(returnObject);
+                  res.send(returnObject);
+                }
+              });
+            }
+          });
         }
       });
     }
@@ -251,7 +272,25 @@ router.get('/sale/range',function(req,res){
         } else {
           console.log('Got listing range');
           returnObject.max = maxListing.cost;
-          res.send(returnObject);
+          Listing.findOne().sort({sqft: 1}).exec(function(err,minListing){
+            if (err) {
+              console.log('Failed to GET min listing price');
+              res.sendStatus(500);
+            } else {
+              console.log('Got listings', minListing);
+              returnObject.minsqft = minListing.sqft;
+              Listing.findOne().sort({sqft: -1}).exec(function(err,maxListing){
+                if (err) {
+                  console.log('Failed to GET max listing price');
+                  res.sendStatus(500);
+                } else {
+                  console.log('Got listing range');
+                  returnObject.maxsqft = maxListing.sqft;
+                  res.send(returnObject);
+                }
+              });
+            }
+          });
         }
       });
     }

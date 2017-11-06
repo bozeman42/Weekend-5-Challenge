@@ -9,7 +9,10 @@ app.service('RealEstateService', function($http, $uibModal){
     searchTerm: '',
     rentalRange: {min: 0, max: 0},
     listingRange: {min: 0, max: 0},
-    searchRange: {min: 0, max: 0}
+    searchRange: {min: 0, max: 0},
+    rentalAreaRange: {min: 0, max: 0},
+    listingAreaRange: {min: 0, max: 0},
+    searchAreaRange: {min: 0, max: 0}
   };
 
   rs.newProperty = {
@@ -57,6 +60,8 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.result.rentalRange = response.data;
       rs.result.searchRange.min = rs.result.rentalRange.min;
       rs.result.searchRange.max = rs.result.rentalRange.max;
+      rs.result.searchAreaRange.min = rs.result.rentalRange.minsqft;
+      rs.result.searchAreaRange.max = rs.result.rentalRange.maxsqft;
       console.log('search range',rs.result.searchRange);
     }).catch(function error(){
       console.log('failed to get range',error);
@@ -67,6 +72,10 @@ app.service('RealEstateService', function($http, $uibModal){
     $http.get('/realestate/sale/range')
     .then(function success(response){
       rs.result.listingRange = response.data;
+      rs.result.searchRange.min = rs.result.listingRange.min;
+      rs.result.searchRange.max = rs.result.listingRange.max;
+      rs.result.searchAreaRange.min = rs.result.listingRange.minsqft;
+      rs.result.searchAreaRange.max = rs.result.listingRange.maxsqft;
       console.log('listing range', rs.result.listingRange);
     }).catch(function error(){
       console.log('failed to get range',error);
@@ -131,8 +140,17 @@ app.service('RealEstateService', function($http, $uibModal){
     });
   };
 
-  rs.searchProperties = function(keyword,searchRange,propertyType){
-    var config = {params: {keyword: keyword, propertyType: propertyType, min: searchRange.min, max: searchRange.max}};
+  rs.searchProperties = function(keyword,searchRange,searchAreaRange,propertyType){
+    var config = {
+      params: {
+        keyword: keyword,
+        propertyType: propertyType,
+        min: searchRange.min,
+        max: searchRange.max,
+        minArea: searchAreaRange.min,
+        maxArea: searchAreaRange.max
+      }
+    };
     $http.get('/realestate/search',config)
     .then(function success(response){
       console.log('Search response for',keyword + ':',response);
