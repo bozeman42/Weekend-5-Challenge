@@ -5,7 +5,7 @@ if (process.env.MONGODB_URI != undefined){
   databaseUrl = process.env.MONGODB_URI;
   console.log('Used heroku URI');
 } else {
-  databaseUrl = 'mongodb://localhost:27017/realestate';
+  databaseUrl = 'mongodb://localhost:27017/realestates';
 }
 mongoose.connection.on('connected', function(){
   console.log('mongoose is connected');

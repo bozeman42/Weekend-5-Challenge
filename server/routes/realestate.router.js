@@ -206,6 +206,10 @@ router.get('/rent/range',function(req,res){
     if (err) {
       res.sendStatus(500);
     } else {
+      if (minRental === null){
+        res.sendStatus(500);
+        return;
+      }
       returnObject.min = minRental.rent;
       Rental.findOne().sort({rent: -1}).exec(function(err,maxRental){
         if (err) {
@@ -246,6 +250,10 @@ router.get('/sale/range',function(req,res){
       console.log('Failed to GET min listing price');
       res.sendStatus(500);
     } else {
+      if (minListing === null){
+        res.sendStatus(500);
+        return;
+      }
       returnObject.min = minListing.cost;
       Listing.findOne().sort({cost: -1}).exec(function(err,maxListing){
         if (err) {
