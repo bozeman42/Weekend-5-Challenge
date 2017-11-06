@@ -80,6 +80,7 @@ router.post('/',function(req,res){
   });
 });
 
+// delete the selected property
 router.delete('/', function(req,res){
   console.log('In the delete route');
   console.log(req.query);
@@ -109,6 +110,7 @@ router.delete('/', function(req,res){
   }
 });
 
+//edit the selected property
 router.put('/',function(req,res){
   var propertyType = req.query.propertyType;
   var property = req.body;
@@ -140,6 +142,7 @@ router.put('/',function(req,res){
   }
 });
 
+// search based upon city, price range, and area range
 router.get('/search',function(req,res){
   var keyword = new RegExp(req.query.keyword,'i');
   var min = req.query.min;
@@ -180,24 +183,28 @@ router.get('/search',function(req,res){
     console.log('Improper property type.');
     res.sendStatus(500);
   }
-  // Game.find({name: searchTerm}, function(err,foundGames){
-  //     if (err) {
-  //         console.log('Search failed',err);
-  //         sendStatus(500);
-  //     } else {
-  //         res.send(foundGames);
-  //     }
-  // });
 });
 
-router.get('/rent/cheapest',function(req,res){
-  Rental.findOne().sort({rent: 1}).exec(function(err,cheapestRental){
+router.get('/rent/featured',function(req,res){
+  Rental.findOne().sort({rent: 1}).exec(function(err,featuredRental){
     if (err) {
       console.log('Failed to GET rentals');
       res.sendStatus(500);
     } else {
       console.log('Got rentals');
-      res.send(cheapestRental);
+      res.send(featuredRental);
+    }
+  });
+});
+
+router.get('/sale/featured',function(req,res){
+  Listing.findOne().sort({cost: 1}).exec(function(err,featuredListing){
+    if (err) {
+      console.log('Failed to GET rentals');
+      res.sendStatus(500);
+    } else {
+      console.log('Got listing');
+      res.send(featuredListing);
     }
   });
 });

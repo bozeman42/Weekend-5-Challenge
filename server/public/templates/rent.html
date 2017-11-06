@@ -21,6 +21,16 @@
       </div>
     </form>
   </div>
+  <div class="col-xs-12 featured">
+    <div class="propertyDiv">
+      <h2>Featured Rental</h2>
+      <p><strong>Rent:</strong> {{rc.result.featuredRental.rent | currency}}</p>
+      <p><strong>Floor Area:</strong> {{rc.result.featuredRental.sqft}} ft<sup>2</sup></p>
+      <p><strong>City:</strong> {{rc.result.featuredRental.city}}</p>
+      <button ng-click="rc.editRental(rental)" class="btn btn-primary">Edit</button>
+      <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
+    </div>
+  </div>
   <div ng-repeat="rental in rc.result.rentals" class="col-md-4 col-sm-6">
     <div class="propertyDiv">
       <p><strong>Rent:</strong> {{rental.rent | currency}}</p>

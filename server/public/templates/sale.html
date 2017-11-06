@@ -1,25 +1,35 @@
 <!-- SaleController as sc -->
 <h1>Properties for Sale</h1>
 <div class="propertiesView">
-    <div class="searchDiv">
-        <form ng-submit="sc.searchListings(sc.result.searchTerm,sc.result.searchRange,sc.result.searchAreaRange)">
-          <div class="form-group">
-            <label for="searchBox">Search:</label>
-            <input id="searchBox" name="searchBox" ng-model="sc.result.searchTerm" placeholder="Search...">
-          </div>
-          <div class="form-group">
-              <label for="minPrice">Minimum price: $</label>
-              <input name="minPrice" type="number" ng-model="sc.result.searchRange.min" required>
-              <label for="maxPrice">Maximum price: $</label>
-              <input name="maxPrice" type="number" ng-model="sc.result.searchRange.max" required>
-              <label for="minArea">Minimum area: </label>
-              <input name="minArea" type="number" ng-model="sc.result.searchAreaRange.min" required>ft<sup>2</sup>
-              <label for="maxArea">Maximum area: </label>
-              <input name="maxArea" type="number" ng-model="sc.result.searchAreaRange.max" required>ft<sup>2</sup>
-              <button type="submit" class="btn btn-primary" >Search</button>
-              <button type="button" class="btn btn-secondary" ng-click="sc.clearSearch()">Clear Search</button>
-          </div>
-        </form>
+  <div class="searchDiv">
+      <form ng-submit="sc.searchListings(sc.result.searchTerm,sc.result.searchRange,sc.result.searchAreaRange)">
+        <div class="form-group">
+          <label for="searchBox">Search:</label>
+          <input id="searchBox" name="searchBox" ng-model="sc.result.searchTerm" placeholder="Search...">
+        </div>
+        <div class="form-group">
+            <label for="minPrice">Minimum price: $</label>
+            <input name="minPrice" type="number" ng-model="sc.result.searchRange.min" required>
+            <label for="maxPrice">Maximum price: $</label>
+            <input name="maxPrice" type="number" ng-model="sc.result.searchRange.max" required>
+            <label for="minArea">Minimum area: </label>
+            <input name="minArea" type="number" ng-model="sc.result.searchAreaRange.min" required>ft<sup>2</sup>
+            <label for="maxArea">Maximum area: </label>
+            <input name="maxArea" type="number" ng-model="sc.result.searchAreaRange.max" required>ft<sup>2</sup>
+            <button type="submit" class="btn btn-primary" >Search</button>
+            <button type="button" class="btn btn-secondary" ng-click="sc.clearSearch()">Clear Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-xs-12 featured">
+        <div class="propertyDiv">
+          <h2>Featured Listing</h2>
+          <p><strong>Cost:</strong> {{sc.result.featuredListing.cost | currency}}</p>
+          <p><strong>Floor Area:</strong> {{sc.result.featuredListing.sqft}} ft<sup>2</sup></p>
+          <p><strong>City:</strong> {{sc.result.featuredListing.city}}</p>
+          <button ng-click="rc.editRental(rental)" class="btn btn-primary">Edit</button>
+          <button ng-click="rc.deleteRental(rental._id)"class="btn btn-danger delete-button">Delete Property</button>
+        </div>
       </div>
     <div ng-repeat="listing in sc.result.listings" class="col-md-4 col-sm-6">
       <div class="propertyDiv">

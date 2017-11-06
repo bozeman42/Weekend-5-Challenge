@@ -12,7 +12,9 @@ app.service('RealEstateService', function($http, $uibModal){
     searchRange: {min: 0, max: 0},
     rentalAreaRange: {min: 0, max: 0},
     listingAreaRange: {min: 0, max: 0},
-    searchAreaRange: {min: 0, max: 0}
+    searchAreaRange: {min: 0, max: 0},
+    featuredListing: {},
+    featuredRental: {}
   };
 
   rs.newProperty = {
@@ -25,33 +27,41 @@ app.service('RealEstateService', function($http, $uibModal){
   rs.data = {};
 
   rs.getRentals = function(){
-    $http.get('/realestate/rent').then(
-      function success(response){
-        console.log('rentals', response.data);
-        rs.result.rentals = response.data;
-        rs.getRentalRange();
-      }
-    )
-    .catch(
-      function error(error){
-        console.log(error);
-      }
-    );
+    $http.get('/realestate/rent')
+    .then(function success(response){
+      console.log('rentals', response.data);
+      rs.result.rentals = response.data;
+      rs.getRentalRange();
+    })
+    .catch(function error(error){
+      console.log(error);
+    });
+    $http.get('/realestate/rent/featured')
+    .then(function success(response){
+      rs.result.featuredRental = response.data;
+    })
+    .catch(function error(err){
+      console.log(err);
+    });
   };
 
   rs.getListings = function(){
-    $http.get('/realestate/sale').then(
-      function success(response){
-        console.log('listings',response.data);
-        rs.result.listings = response.data;
-        rs.getListingRange();
-      }
-    )
-    .catch(
-      function error(error){
-        console.log(error);
-      }
-    );
+    $http.get('/realestate/sale')
+    .then(function success(response){
+      console.log('listings',response.data);
+      rs.result.listings = response.data;
+      rs.getListingRange();
+    })
+    .catch(function error(error){
+      console.log(error);
+    });
+    $http.get('/realestate/sale/featured')
+    .then(function success(response){
+      rs.result.featuredListing = response.data;
+    })
+    .catch(function error(err){
+      console.log(err);
+    });
   };
 
   rs.getRentalRange = function(){
@@ -63,7 +73,8 @@ app.service('RealEstateService', function($http, $uibModal){
       rs.result.searchAreaRange.min = rs.result.rentalRange.minsqft;
       rs.result.searchAreaRange.max = rs.result.rentalRange.maxsqft;
       console.log('search range',rs.result.searchRange);
-    }).catch(function error(){
+    })
+    .catch(function error(){
       console.log('failed to get range',error);
     });
   };
@@ -85,7 +96,6 @@ app.service('RealEstateService', function($http, $uibModal){
   rs.refreshProperties = function(){
     rs.getListings();
     rs.getRentals();
-
   };
 
   rs.addNewProperty = function(newProperty){
