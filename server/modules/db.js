@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
-var databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/realestate';
-
+if (process.env.MONGODB_URI != undefined){
+  databaseUrl = proceass.eng.MONGODB_URI;
+} else {
+  databaseUrl = 'mongodb://localhost:27017/realestate';
+}
 mongoose.connection.on('connected', function(){
   console.log('mongoose is connected');
 });
