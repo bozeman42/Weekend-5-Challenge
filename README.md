@@ -35,7 +35,7 @@ Steps to get the development environment running.
 1. Download this project.
 2. `npm install`
 3. `npm start`
-4. If it says 'listening on port 5000' and 'mongoose is connected' you are ready to go!
+4. If it says `listening on port 5000` and `mongoose is connected` you are ready to go!
 
 ### Completed Features
 
